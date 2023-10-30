@@ -19,6 +19,8 @@ export class LoginStore {
             userDetails: observable,
             isLoggedIn: observable,
             handleLoggedIn: action,
+            setIsLoggedIn: action,
+            setIsLogout: action,
             // handleLogOut: action,
         })
         this.rootStore = rootStore
@@ -34,6 +36,12 @@ export class LoginStore {
     }) => {
         this.userDetails.name = form.name
         this.userDetails.email = form.email
+    }
+    setIsLoggedIn = () => {
+        this.isLoggedIn = true
+    }
+    setIsLogout = () => {
+        this.isLoggedIn = false
     }
     // handleLogOut = () => {
     //     this.isLoggedIn = false

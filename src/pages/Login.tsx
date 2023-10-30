@@ -17,7 +17,6 @@ const StyledBox = styled(Box)(() => ({
 
 const Login = inject('loginStore')(
     observer(({ loginStore }: any) => {
-        // console.log(toJS(loginStore))
         const navigate = useNavigate()
         const form = useMemo(() => getMobxLoginFormValidation(fields), [])
 
@@ -33,8 +32,8 @@ const Login = inject('loginStore')(
                     email === storedUser.email &&
                     password === storedUser.password
                 ) {
-                    // loginStore.setUserDetails(storedUser)
                     alert('Login successful.')
+                    loginStore.setIsLoggedIn()
                     navigate('/blog')
                     form.reset()
                     return null
@@ -50,8 +49,8 @@ const Login = inject('loginStore')(
                         form.values().email,
                         JSON.stringify(form.values()),
                     )
-                    // loginStore.setUserDetails(localStorage.getItem(email))
                     alert('User registered successfully.')
+                    loginStore.setIsLoggedIn()
                     navigate('/blog')
                     form.reset()
                 },

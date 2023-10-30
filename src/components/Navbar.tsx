@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { toJS } from 'mobx'
+import { useNavigate } from 'react-router-dom'
 import {
     Box,
     AppBar,
@@ -25,14 +25,13 @@ const StyledButton = styled(Button)(() => ({
 
 const Navbar = inject('loginStore')(
     observer(({ loginStore }: any) => {
-        console.log(toJS(loginStore.userDetails))
         const [open, setOpen] = useState(false)
-        const form = useMemo(() => getMobxLoginFormValidation(fields), [])
-        console.log(form.values())
-        // const stored=localStorage.getItem()
+        const navigate = useNavigate()
+
         const handleLogout = () => {
-            // localStorage.removeItem();
-            alert('Logged out successfully.')
+            alert('Logged out successfully')
+            loginStore.setIsLogout()
+            navigate('/')
         }
 
         return (
@@ -41,25 +40,29 @@ const Navbar = inject('loginStore')(
                     <StyledToolbar>
                         <Typography variant='h6'>Blogs</Typography>
                         <StyledButton>
-                            <Person onClick={() => setOpen(true)} />
-                            <Menu
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={open}
-                                onClose={() => setOpen(false)}
-                            >
-                                <MenuItem>
-                                    <Button
-                                        variant='outlined'
-                                        color='error'
-                                        onClick={() => handleLogout}
+                            {loginStore.isLoggedIn && (
+                                <>
+                                    <Person onClick={() => setOpen(true)} />
+                                    <Menu
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={open}
+                                        onClose={() => setOpen(false)}
                                     >
-                                        Logout
-                                    </Button>
-                                </MenuItem>
-                            </Menu>
+                                        <MenuItem>
+                                            <Button
+                                                variant='outlined'
+                                                color='error'
+                                                onClick={() => handleLogout()}
+                                            >
+                                                Logout
+                                            </Button>
+                                        </MenuItem>
+                                    </Menu>
+                                </>
+                            )}
                         </StyledButton>
                     </StyledToolbar>
                 </AppBar>
