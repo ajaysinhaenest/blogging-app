@@ -1,53 +1,57 @@
-import { getRandomDate } from '../helperFunctions/helperFunctions'
+import { getRandomDate } from '../shared/utils/helperFunctions'
 
-const PASSWORD_VALIDATOR =
-    /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/
-
-export const fields = [
+export const blogFields = [
     {
-        name: 'name',
-        label: 'Full Name',
+        name: 'title',
+        label: 'Title',
         type: 'text',
-        placeholder: 'Enter your name',
+        placeholder: 'enter blog title',
         rules: 'required|string',
     },
     {
-        name: 'email',
-        label: 'Email',
+        name: 'description',
+        label: 'Description',
         type: 'text',
-        placeholder: 'Insert Email',
-        rules: 'required|email',
+        placeholder: 'enter your blog',
+        rules: 'required|string',
     },
     {
-        name: 'password',
-        label: 'Password',
-        type: 'password',
-        placeholder: 'Insert Password',
-        rules: `required|regex:${PASSWORD_VALIDATOR}`,
-        // rules: 'abc',
+        name: 'date',
+        label: '',
+        type: 'date',
+        placeholder: '',
+        rules: 'required',
+    },
+    {
+        name: 'imgUrl',
+        label: '',
+        type: 'file',
+        placeholder: '',
+        rules: 'required',
     },
 ]
 
-export const blogDate = [
+export const blogData = [
     {
         title: 'Shrimp and Chorizo Paella',
-        date: getRandomDate(),
-        imgUrl: 'https://mui.com/static/images/cards/paella.jpg',
         description:
             'This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.',
+        date: getRandomDate(),
+        imgUrl: 'https://mui.com/static/images/cards/paella.jpg',
     },
     {
         title: 'Lizard',
-        date: getRandomDate(),
-        imgUrl: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
         description:
             'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica ',
+        date: getRandomDate(),
+        imgUrl: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
     },
     {
         title: 'Bois et black',
-        date: getRandomDate(),
-        imgUrl: 'https://media.nngroup.com/media/editor/2016/10/14/pinterest.png',
+
         description:
             'his card model saw a revival when the iPad first came out, when many apps were trying to control the look of each page presented to the user. You are probably familiar with the deck-of-cards paradigm from mobile weather apps — most of them employ it for displaying the weather in different cities.',
+        date: getRandomDate(),
+        imgUrl: 'https://media.nngroup.com/media/editor/2016/10/14/pinterest.png',
     },
 ]

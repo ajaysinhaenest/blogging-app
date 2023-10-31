@@ -1,4 +1,4 @@
-interface fields {
+export interface IFields {
     name: string
     label: string
     type: string

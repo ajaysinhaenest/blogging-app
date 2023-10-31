@@ -4,7 +4,7 @@ import MobxReactForm from 'mobx-react-form'
 import { FormEvent } from 'react'
 import { reaction } from 'mobx'
 
-export default function getMobxLoginFormValidation(
+export default function getMobxFormValidation(
     fields: any,
     successHandler = (form?: FormEvent) => null,
     errorHandler = () => null,

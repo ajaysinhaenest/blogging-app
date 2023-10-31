@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './App'
 import { Provider } from 'mobx-react'
-import RootStore from './app/rootStore'
+import RootStore from './shared/stores/rootStore'
 
 const rootStore = new RootStore()
 

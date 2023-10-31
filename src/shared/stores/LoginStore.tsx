@@ -43,17 +43,4 @@ export class LoginStore {
     setIsLogout = () => {
         this.isLoggedIn = false
     }
-    // handleLogOut = () => {
-    //     this.isLoggedIn = false
-    // }
-    // increment = () => {
-    //     this.count++
-    // }
-    // decrement = () => {
-    //     console.log(this.rootStore)
-    //     this.count--
-    // }
-    // get getCountValue() {
-    //     return this.count
-    // }
 }

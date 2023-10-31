@@ -8,3 +8,7 @@ export function getRandomDate(
     const randomTime = start + Math.random() * (end - start)
     return new Date(randomTime)
 }
+
+export function generateRandomToken() {
+    return Math.random().toString(36).substr(2) // Generates a random alphanumeric token
+}

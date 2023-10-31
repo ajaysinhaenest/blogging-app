@@ -1,4 +1,4 @@
-import { LoginStore } from '../stores/LoginStore'
+import { LoginStore } from './LoginStore'
 
 class RootStore {
     loginStore

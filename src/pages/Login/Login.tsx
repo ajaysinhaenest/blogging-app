@@ -1,30 +1,36 @@
 import { useMemo, useEffect } from 'react'
-import { toJS } from 'mobx'
+// import { toJS } from 'mobx'
 import { useNavigate } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import { Box, TextField, Button, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { fields } from '../common/config'
-import getMobxLoginFormValidation from '../validation/MobxLoginFormValidation'
+import { loginFields } from './Login.fields'
+import getMobxFormValidation from '../../shared/validation/MobxLoginFormValidation'
+import { generateRandomToken } from '../../shared/utils/helperFunctions'
 
 const StyledBox = styled(Box)(() => ({
-    backgroundColor: '#999',
-    width: 400,
+    backgroundColor: 'white',
+    width: 360,
     padding: '20px',
     marginTop: '120px',
-    borderRadius: '2px',
+    borderRadius: '4px',
+    boxShadow: '2px 1px 10px gray',
 }))
 
 const Login = inject('loginStore')(
     observer(({ loginStore }: any) => {
+        const token = generateRandomToken()
+        console.log(token)
         const navigate = useNavigate()
-        const form = useMemo(() => getMobxLoginFormValidation(fields), [])
+        const form = useMemo(() => getMobxFormValidation(loginFields), [])
 
         const handleSubmit = (e: React.FormEvent) => {
             e.preventDefault()
 
             const { email, password } = form.values()
-            const storedUser = JSON.parse(localStorage.getItem(email) || 'null')
+            const storedUser = JSON.parse(
+                localStorage.getItem('user') || 'null',
+            )
             console.log(storedUser)
 
             if (storedUser) {
@@ -45,10 +51,7 @@ const Login = inject('loginStore')(
 
             form.submit({
                 onSuccess: () => {
-                    localStorage.setItem(
-                        form.values().email,
-                        JSON.stringify(form.values()),
-                    )
+                    localStorage.setItem('user', JSON.stringify(form.values()))
                     alert('User registered successfully.')
                     loginStore.setIsLoggedIn()
                     navigate('/blog')
@@ -59,14 +62,16 @@ const Login = inject('loginStore')(
             console.log(form.values())
             console.log(loginStore.userDetails)
         }
+
         return (
-            <Box display='flex' justifyContent='center'>
+            <Box display='flex' justifyContent='center' bgcolor='secondary'>
                 <StyledBox>
                     <h2> {loginStore.isLoggedIn ? 'Log In' : 'Sign UP'}</h2>
                     <form>
                         {!loginStore.isLoggedIn && (
                             <>
                                 <TextField
+                                    size='small'
                                     color='primary'
                                     variant='outlined'
                                     fullWidth
@@ -74,12 +79,13 @@ const Login = inject('loginStore')(
                                     {...form.$('name').bind()}
                                 />
 
-                                <Typography color='error' sx={{ mb: 1 }}>
+                                <Typography color='error' sx={{}}>
                                     {form.$('name').error}
                                 </Typography>
                             </>
                         )}
                         <TextField
+                            size='small'
                             color='primary'
                             variant='outlined'
                             fullWidth
@@ -91,10 +97,11 @@ const Login = inject('loginStore')(
                             {form.$('email').error}
                         </Typography>
                         <TextField
+                            size='small'
+                            fullWidth
                             color='primary'
                             variant='outlined'
-                            fullWidth
-                            margin='normal'
+                            fulln='normal'
                             {...form.$('password').bind()}
                         />
 
