@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {
     Card,
     CardHeader,
@@ -9,8 +7,6 @@ import {
     CardContent,
     Typography,
     CardActions,
-    Box,
-    InputBase,
     styled,
     Button,
 } from '@mui/material'
@@ -41,7 +37,7 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
     console.log(realTime)
 
     return (
-        <Card sx={{ maxWidth: 400, margin: 2 }}>
+        <Card sx={{ maxWidth: 360, margin: 2 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: 'red' }} aria-label='recipe'>
@@ -58,7 +54,7 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
             />
             <CardMedia
                 component='img'
-                height='194'
+                height='160'
                 image={
                     imgUrl ||
                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzoDghJRdutBzKQYojXNLOXT-QoPFkN3T57ZQF2kTz&s'
@@ -67,7 +63,7 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
             />
             <CardContent>
                 <Typography variant='body2' color='text.secondary'>
-                    {description}
+                    {description.slice(0, 100) + '...'}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -85,9 +81,6 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
                     </Button>
                 </Link>
             </StyledButton>
-            {/* <StyledInput>
-                <InputBase fullWidth color='secondary' />
-            </StyledInput> */}
         </Card>
     )
 }

@@ -24,4 +24,11 @@ export const loginFields = [
         rules: `required|regex:${PASSWORD_VALIDATOR}`,
         // rules: 'abc',
     },
+    {
+        name: 'admin',
+        label: 'admin',
+        type: 'checkbox',
+        placeholder: '',
+        // rules: 'abc',
+    },
 ]

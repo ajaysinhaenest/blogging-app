@@ -1,35 +1,19 @@
-import { Box } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import BlogList from './BlogCard/BlogList'
-import { blogData } from '../../assets/config'
-import AddBlog from './Addblog/AddBlog'
-
-interface IBlog {
-    title: string
-    imgUrl: string
-    description: string
-    date: Date
-}
+import Admin from './Admin/Admin'
+import User from './User/User'
 
 const Blogs = () => {
-    const [blogs, setBlogs] = useState<IBlog[]>([])
+    const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
     useEffect(() => {
-        const localStorageData = localStorage.getItem('blogData')
-        if (localStorageData) {
-            setBlogs(JSON.parse(localStorageData))
+        const user = JSON.parse(localStorage.getItem('login_user') || 'null')
+        console.log(user)
+        if (user) {
+            setIsAdmin(user.admin)
         }
     }, [])
-
-    if (blogs.length === 0) return null
-    console.log(blogs)
-
-    return (
-        <Box mt={8}>
-            <BlogList blog={blogs} />
-            <AddBlog blog={blogs} setBlogs={setBlogs} />
-        </Box>
-    )
+    console.log(isAdmin)
+    return <>{isAdmin ? <Admin /> : <User />}</>
 }
 
 export default Blogs
