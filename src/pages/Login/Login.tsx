@@ -57,7 +57,6 @@ const Login = inject('loginStore')(
                         JSON.stringify(userlogin),
                     )
 
-                    loginStore.setIsLoggedIn()
                     navigate('/blog')
                     form.reset()
                     return null
@@ -76,9 +75,13 @@ const Login = inject('loginStore')(
                         'users',
                         JSON.stringify([...user, form.values()]),
                     )
+
+                    localStorage.setItem(
+                        'login_user',
+                        JSON.stringify(form.values()),
+                    )
                     alert('User registered successfully.')
                     form.reset()
-                    loginStore.setIsLoggedIn()
                     navigate('/blog')
                 },
                 onError: (error: string) => console.log(error),

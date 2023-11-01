@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, styled, Button } from '@mui/material'
 
-import BlogCard from '../../pages/Blogs/BlogCard/BlogCard'
+import BlogCard from './BlogCard'
 interface blogData {
     title: string
     date: Date

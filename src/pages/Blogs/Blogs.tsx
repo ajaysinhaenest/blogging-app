@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import BlogList from '../../shared/components/BlogList'
+import BlogList from './BlogCard/BlogList'
 import { blogData } from '../../assets/config'
 import AddBlog from './Addblog/AddBlog'
 

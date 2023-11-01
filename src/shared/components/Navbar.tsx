@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+
 import {
     Box,
     AppBar,
@@ -9,6 +10,7 @@ import {
     MenuItem,
     Menu,
 } from '@mui/material'
+
 import { Person } from '@mui/icons-material'
 import { inject, observer } from 'mobx-react'
 import { styled } from '@mui/material/styles'
@@ -17,18 +19,34 @@ const StyledToolbar = styled(Toolbar)(() => ({
     display: 'flex',
     justifyContent: 'space-between',
 }))
+
 const StyledButton = styled(Button)(() => ({
     color: 'white',
 }))
 
+const StyledTypography = styled(Typography)({
+    textDecoration: 'none',
+    color: 'white',
+})
+
 const Navbar = inject('loginStore')(
     observer(({ loginStore }: any) => {
+        const [loggedIn, setLoggedIn] = useState<boolean>(false)
         const [open, setOpen] = useState(false)
         const navigate = useNavigate()
 
+        useEffect(() => {
+            const loginUser = JSON.parse(
+                localStorage.getItem('login_user') || 'null',
+            )
+            console.log(loginUser)
+            setLoggedIn(!!loginUser)
+            console.log(!!loginUser)
+        }, [loggedIn])
+
         const handleLogout = () => {
             alert('Logged out successfully')
-            loginStore.setIsLogout()
+            localStorage.removeItem('login_user')
             navigate('/')
         }
 
@@ -36,9 +54,13 @@ const Navbar = inject('loginStore')(
             <Box position='static'>
                 <AppBar position='fixed' color='primary'>
                     <StyledToolbar>
-                        <Typography variant='h6'>Blogs</Typography>
+                        <Link to='/'>
+                            <StyledTypography variant='h6'>
+                                Blogs
+                            </StyledTypography>
+                        </Link>
                         <StyledButton>
-                            {loginStore.isLoggedIn && (
+                            {loggedIn && (
                                 <>
                                     <Person onClick={() => setOpen(true)} />
                                     <Menu

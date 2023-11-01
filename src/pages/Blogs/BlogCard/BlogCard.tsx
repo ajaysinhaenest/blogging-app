@@ -10,9 +10,13 @@ import {
     Typography,
     CardActions,
     Box,
+    InputBase,
+    styled,
+    Button,
 } from '@mui/material'
 import { Favorite, Share, MoreVert } from '@mui/icons-material'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 interface Props {
     title: string
@@ -21,6 +25,11 @@ interface Props {
     date: Date
 }
 
+const StyledButton = styled(Button)({
+    backgroundColor: 'cyan',
+    width: '100%',
+    height: 35,
+})
 const BlogCard = ({ title, imgUrl, description, date }: Props) => {
     const publishTime: any = new Date(date)
     const dateObject = moment(
@@ -30,6 +39,7 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
 
     const realTime = dateObject.calendar()
     console.log(realTime)
+
     return (
         <Card sx={{ maxWidth: 400, margin: 2 }}>
             <CardHeader
@@ -68,6 +78,16 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
                     <Share />
                 </IconButton>
             </CardActions>
+            <StyledButton>
+                <Link to={'/blog/' + title}>
+                    <Button size='small' variant='text' color='secondary'>
+                        Explore More
+                    </Button>
+                </Link>
+            </StyledButton>
+            {/* <StyledInput>
+                <InputBase fullWidth color='secondary' />
+            </StyledInput> */}
         </Card>
     )
 }

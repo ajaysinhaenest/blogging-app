@@ -5,6 +5,7 @@ import { Outlet, createBrowserRouter } from 'react-router-dom'
 import Login from './pages/Login/Login'
 import Blogs from './pages/Blogs/Blogs'
 import { blogData } from './assets/config'
+import SingleBlog from './pages/SingleBlog/SingleBlog'
 
 function App() {
     // const jsonArray = JSON.stringify(blogData)
@@ -28,13 +29,12 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/blog',
-                element: (
-                    <>
-                        <Blogs />
-                    </>
-                ),
+                element: <Blogs />,
             },
-            {},
+            {
+                path: '/blog/:id',
+                element: <SingleBlog />,
+            },
         ],
     },
 ])

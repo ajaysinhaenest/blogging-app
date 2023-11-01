@@ -5,3 +5,11 @@ export interface IFields {
     placeholder: string
     rules: string
 }
+
+export interface ISingleBlog {
+    title: string
+    description: string
+    date: string
+    imgUrl: string
+    comments: []
+}
