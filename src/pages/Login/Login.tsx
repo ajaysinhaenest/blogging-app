@@ -1,12 +1,11 @@
-import { useMemo, useEffect } from 'react'
-// import { toJS } from 'mobx'
+import { useMemo, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import { Box, TextField, Button, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { loginFields } from './Login.fields'
 import getMobxFormValidation from '../../shared/validation/MobxLoginFormValidation'
-import { generateRandomToken } from '../../shared/utils/helperFunctions'
+import { IUser } from '../../shared/interfaces/user.interface'
 
 const StyledBox = styled(Box)(() => ({
     backgroundColor: 'white',
@@ -19,50 +18,76 @@ const StyledBox = styled(Box)(() => ({
 
 const Login = inject('loginStore')(
     observer(({ loginStore }: any) => {
-        const token = generateRandomToken()
-        console.log(token)
-        const navigate = useNavigate()
+        const [user, setUser] = useState<IUser[]>([])
         const form = useMemo(() => getMobxFormValidation(loginFields), [])
+
+        const navigate = useNavigate()
+
+        useEffect(() => {
+            const storedData = localStorage.getItem('users')
+            if (storedData) {
+                setUser(JSON.parse(storedData))
+            }
+        }, [])
 
         const handleSubmit = (e: React.FormEvent) => {
             e.preventDefault()
 
             const { email, password } = form.values()
-            const storedUser = JSON.parse(
-                localStorage.getItem('user') || 'null',
-            )
-            console.log(storedUser)
 
-            if (storedUser) {
+            const storedUsers = JSON.parse(
+                localStorage.getItem('users') || 'null',
+            )
+
+            const userlogin = storedUsers?.filter((el: IUser, i: number) => {
+                return el.email === email && el.password === password
+            })
+
+            console.log(userlogin)
+
+            if (userlogin?.length) {
+                console.log(userlogin[0].email, userlogin[0].password)
                 if (
-                    email === storedUser.email &&
-                    password === storedUser.password
+                    email === userlogin[0].email &&
+                    password === userlogin[0].password
                 ) {
                     alert('Login successful.')
+                    localStorage.setItem(
+                        'login_user',
+                        JSON.stringify(userlogin),
+                    )
+
                     loginStore.setIsLoggedIn()
                     navigate('/blog')
                     form.reset()
                     return null
                 } else {
-                    alert('Login failed. Check your credentials.')
-                    return null
+                    alert('check your credentials')
                 }
             }
 
             form.submit({
                 onSuccess: () => {
-                    localStorage.setItem('user', JSON.stringify(form.values()))
+                    console.log(form.values())
+
+                    setUser((prevState) => [...prevState, form.values()])
+
+                    localStorage.setItem(
+                        'users',
+                        JSON.stringify([...user, form.values()]),
+                    )
                     alert('User registered successfully.')
+                    form.reset()
                     loginStore.setIsLoggedIn()
                     navigate('/blog')
-                    form.reset()
                 },
                 onError: (error: string) => console.log(error),
             })
+
             console.log(form.values())
-            console.log(loginStore.userDetails)
         }
 
+        console.log(user)
         return (
             <Box display='flex' justifyContent='center' bgcolor='secondary'>
                 <StyledBox>

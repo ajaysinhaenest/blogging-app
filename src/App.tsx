@@ -4,7 +4,6 @@ import Navbar from './shared/components/Navbar'
 import { Outlet, createBrowserRouter } from 'react-router-dom'
 import Login from './pages/Login/Login'
 import Blogs from './pages/Blogs/Blogs'
-import AddBlog from './pages/Blogs/Addblog/AddBlog'
 import { blogData } from './assets/config'
 
 function App() {
@@ -31,8 +30,7 @@ export const router = createBrowserRouter([
                 path: '/blog',
                 element: (
                     <>
-                        {/* <Blogs /> */}
-                        {/* <AddBlog /> */}
+                        <Blogs />
                     </>
                 ),
             },

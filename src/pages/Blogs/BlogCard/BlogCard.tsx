@@ -46,7 +46,6 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
                 title={title}
                 subheader={realTime}
             />
-            {/* <Typography>{publishTime}</Typography> */}
             <CardMedia
                 component='img'
                 height='194'
@@ -56,7 +55,6 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
                 }
                 alt='Paella dish'
             />
-            {/* <img src={imgUrl} alt='' /> */}
             <CardContent>
                 <Typography variant='body2' color='text.secondary'>
                     {description}

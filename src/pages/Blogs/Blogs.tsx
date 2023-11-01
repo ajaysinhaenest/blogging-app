@@ -14,10 +14,8 @@ interface IBlog {
 const Blogs = () => {
     const [blogs, setBlogs] = useState<IBlog[]>([])
 
-    // Store it in localStorage under a specific key
     useEffect(() => {
         const localStorageData = localStorage.getItem('blogData')
-        // console.log(localStorageData)
         if (localStorageData) {
             setBlogs(JSON.parse(localStorageData))
         }

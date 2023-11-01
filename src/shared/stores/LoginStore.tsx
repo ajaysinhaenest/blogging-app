@@ -1,23 +1,21 @@
 import { action, makeObservable, observable } from 'mobx'
-// import { RootStore } from '../app/store'
 
-interface IUserDetails {
+interface IUser {
     name: string
     email: string
+    password: string
 }
 
 export class LoginStore {
-    userDetails: IUserDetails = {
-        name: '',
-        email: '',
-    }
+    user: IUser[] = []
     isLoggedIn = false
     rootStore
 
     constructor(rootStore: any) {
         makeObservable(this, {
-            userDetails: observable,
+            user: observable,
             isLoggedIn: observable,
+            setUser: action,
             handleLoggedIn: action,
             setIsLoggedIn: action,
             setIsLogout: action,
@@ -29,13 +27,8 @@ export class LoginStore {
     handleLoggedIn = () => {
         this.isLoggedIn = !this.isLoggedIn
     }
-    setUserDetails = (form: {
-        name: string
-        email: string
-        password: string
-    }) => {
-        this.userDetails.name = form.name
-        this.userDetails.email = form.email
+    setUser = (form: { name: string; email: string; password: string }) => {
+        this.user = [...this.user, form]
     }
     setIsLoggedIn = () => {
         this.isLoggedIn = true

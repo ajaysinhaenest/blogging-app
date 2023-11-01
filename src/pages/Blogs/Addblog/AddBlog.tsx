@@ -22,7 +22,6 @@ interface IBlog {
 }
 
 interface Props {
-    // loginStore:any
     blog: IBlog[]
     setBlogs: React.Dispatch<React.SetStateAction<IBlog[]>>
 }
@@ -38,18 +37,15 @@ const AddBlog = inject('loginStore')(
         const [open, setOpen] = useState(false)
         const blogForm = useMemo(() => getMobxFormValidation(blogFields), [])
 
-        // console.log(blogData)
-
         const handleSubmit = (e: React.FormEvent) => {
             e.preventDefault()
+            const blogs = JSON.parse(localStorage.getItem('blogData') || 'null')
             console.log(blogForm.values())
             console.log('submitted successfully')
-            const updatedData = [...blog, blogForm.values()]
-            setBlogs(updatedData)
-            // console.log(blogForm.values())
-            // blogData.push(blogForm.values())
 
-            // const jsonArray = JSON.stringify(blogData)
+            const updatedData = [...blogs, blogForm.values()]
+            setBlogs(updatedData)
+
             localStorage.setItem('blogData', JSON.stringify(updatedData))
             setOpen(false)
             blogForm.clear()

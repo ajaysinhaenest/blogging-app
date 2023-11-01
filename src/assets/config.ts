@@ -38,6 +38,7 @@ export const blogData = [
             'This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.',
         date: getRandomDate(),
         imgUrl: 'https://mui.com/static/images/cards/paella.jpg',
+        comments: [],
     },
     {
         title: 'Lizard',
@@ -45,6 +46,7 @@ export const blogData = [
             'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica ',
         date: getRandomDate(),
         imgUrl: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
+        comments: [],
     },
     {
         title: 'Bois et black',
@@ -53,5 +55,6 @@ export const blogData = [
             'his card model saw a revival when the iPad first came out, when many apps were trying to control the look of each page presented to the user. You are probably familiar with the deck-of-cards paradigm from mobile weather apps — most of them employ it for displaying the weather in different cities.',
         date: getRandomDate(),
         imgUrl: 'https://media.nngroup.com/media/editor/2016/10/14/pinterest.png',
+        comments: [],
     },
 ]

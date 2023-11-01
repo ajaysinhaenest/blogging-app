@@ -22,10 +22,6 @@ const StyledButton = styled(Button)(() => ({
 
 const BlogList = ({ blog }: Props) => {
     console.log(blog)
-    // const blogData = localStorage.getItem('blogData')
-
-    // Parse the JSON string back to an array of objects
-    // const retrievedblogs = JSON.parse(blogData || 'null')
 
     return (
         <Box display='flex' justifyContent='center'>
