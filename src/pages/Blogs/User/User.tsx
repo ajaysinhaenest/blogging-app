@@ -1,8 +1,7 @@
 import { Box } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import BlogList from '../BlogCard/BlogList'
-import { blogData } from '../../../assets/config'
-import AddBlog from '../Addblog/AddBlog'
+import ShowAllBlogsButton from '../../../shared/components/ShowAllBlogsButton'
 
 interface IBlog {
     title: string
@@ -10,8 +9,12 @@ interface IBlog {
     description: string
     date: Date
 }
+interface Props {
+    allBlogsButton: boolean
+    setAllBlogsButton: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const User = () => {
+const User = ({ allBlogsButton, setAllBlogsButton }: Props) => {
     const [blogs, setBlogs] = useState<IBlog[]>([])
 
     useEffect(() => {
@@ -25,7 +28,11 @@ const User = () => {
     console.log(blogs)
     return (
         <Box mt={8}>
-            <BlogList blog={blogs} />
+            <ShowAllBlogsButton
+                allBlogsButton={allBlogsButton}
+                setAllBlogsButton={setAllBlogsButton}
+            />
+            <BlogList blog={blogs} allBlogs={allBlogsButton} />
         </Box>
     )
 }

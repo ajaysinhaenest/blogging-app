@@ -37,7 +37,7 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
     console.log(realTime)
 
     return (
-        <Card sx={{ maxWidth: 360, margin: 2 }}>
+        <Card sx={{ maxWidth: 320, margin: 2 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: 'red' }} aria-label='recipe'>

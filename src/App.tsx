@@ -1,6 +1,6 @@
 import './App.css'
 import { Box } from '@mui/material'
-import Navbar from './shared/components/Navbar'
+import Navbar from './shared/components/Navbar/Navbar'
 import { Outlet, createBrowserRouter } from 'react-router-dom'
 import Login from './pages/Login/Login'
 import Blogs from './pages/Blogs/Blogs'

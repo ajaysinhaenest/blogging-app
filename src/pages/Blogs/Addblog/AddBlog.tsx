@@ -22,7 +22,7 @@ interface IBlog {
 }
 
 interface Props {
-    blog: IBlog[]
+    blogs: IBlog[]
     setBlogs: React.Dispatch<React.SetStateAction<IBlog[]>>
 }
 
@@ -33,7 +33,7 @@ const StyledModal = styled(Modal)({
 })
 
 const AddBlog = inject('loginStore')(
-    observer(({ blog, setBlogs }: Props) => {
+    observer(({ blogs, setBlogs }: Props) => {
         const [open, setOpen] = useState(false)
         const blogForm = useMemo(() => getMobxFormValidation(blogFields), [])
 

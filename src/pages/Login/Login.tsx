@@ -6,7 +6,6 @@ import { styled } from '@mui/material/styles'
 import { loginFields } from './Login.fields'
 import getMobxFormValidation from '../../shared/validation/MobxLoginFormValidation'
 import { IUser } from '../../shared/interfaces/user.interface'
-// import { CheckBox } from '@mui/icons-material'
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
@@ -30,6 +29,13 @@ const Login = inject('loginStore')(
             const storedData = localStorage.getItem('users')
             if (storedData) {
                 setUser(JSON.parse(storedData))
+            }
+            const loginUser = JSON.parse(
+                localStorage.getItem('login_user') || 'null',
+            )
+
+            if (loginUser) {
+                navigate('/blog')
             }
         }, [])
 
@@ -73,17 +79,40 @@ const Login = inject('loginStore')(
                 onSuccess: () => {
                     console.log(form.values())
 
-                    setUser((prevState) => [...prevState, form.values()])
+                    if (form.values().admin) {
+                        setUser((prevState) => [
+                            ...prevState,
+                            { ...form.values(), notifications: [] },
+                        ])
 
-                    localStorage.setItem(
-                        'users',
-                        JSON.stringify([...user, form.values()]),
-                    )
+                        localStorage.setItem(
+                            'users',
+                            JSON.stringify([
+                                ...user,
+                                { ...form.values(), notifications: [] },
+                            ]),
+                        )
 
-                    localStorage.setItem(
-                        'login_user',
-                        JSON.stringify(form.values()),
-                    )
+                        localStorage.setItem(
+                            'login_user',
+                            JSON.stringify({
+                                ...form.values(),
+                                notifications: [],
+                            }),
+                        )
+                    } else {
+                        setUser((prevState) => [...prevState, form.values()])
+
+                        localStorage.setItem(
+                            'users',
+                            JSON.stringify([...user, form.values()]),
+                        )
+
+                        localStorage.setItem(
+                            'login_user',
+                            JSON.stringify(form.values()),
+                        )
+                    }
                     alert('User registered successfully.')
                     form.reset()
                     navigate('/blog')

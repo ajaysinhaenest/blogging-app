@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Box, styled, Button } from '@mui/material'
 
 import BlogCard from './BlogCard'
@@ -11,25 +11,43 @@ interface blogData {
 
 interface Props {
     blog: blogData[]
+    allBlogs: boolean
 }
 
-const StyledButton = styled(Button)(() => ({
+const StyledBox = styled(Box)(() => ({
     display: 'flex',
     justifyContent: 'center',
-    flexDirection: 'column',
-    // margin: '20px',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
 }))
 
-const BlogList = ({ blog }: Props) => {
-    console.log(blog)
+const BlogList = ({ blog, allBlogs }: Props) => {
+    const [blogCount, setBlogCount] = useState(6)
+    console.log(allBlogs)
+
+    useEffect(() => {
+        if (allBlogs) {
+            setBlogCount(blog.length)
+        } else {
+            setBlogCount(6)
+        }
+    }, [allBlogs, blog.length])
 
     return (
-        <Box display='flex' justifyContent='center'>
-            <StyledButton>
-                {blog.map((blog: blogData, i: number) => (
+        <Box
+            display='flex'
+            justifyContent='center'
+            sx={{
+                pt: { xs: 16, md: 2 },
+                pl: { xs: 0, md: 24 },
+                backgroundColor: 'lightskyblue',
+            }}
+        >
+            <StyledBox>
+                {blog.slice(0, blogCount).map((blog: blogData, i: number) => (
                     <BlogCard key={i} {...blog} />
                 ))}
-            </StyledButton>
+            </StyledBox>
         </Box>
     )
 }

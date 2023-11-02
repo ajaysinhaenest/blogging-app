@@ -1,6 +1,8 @@
 import { Box, Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import BlogList from '../BlogCard/BlogList'
+import AddBlog from '../Addblog/AddBlog'
+import ShowAllBlogsButton from '../../../shared/components/ShowAllBlogsButton'
 
 interface IBlog {
     title: string
@@ -9,8 +11,14 @@ interface IBlog {
     date: Date
 }
 
-const Admin = () => {
+interface Props {
+    allBlogsButton: boolean
+    setAllBlogsButton: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Admin = ({ allBlogsButton, setAllBlogsButton }: Props) => {
     const [blogs, setBlogs] = useState<IBlog[]>([])
+    // const [allBlogsButton, setAllBlogsButton] = useState(false)
 
     useEffect(() => {
         const localStorageData = localStorage.getItem('blogData')
@@ -28,41 +36,54 @@ const Admin = () => {
             sx={{ display: { xs: 'block', md: 'flex' } }}
             gap={6}
         >
-            <Box
-                sx={{
-                    width: { sm: '100%', md: 250 },
-                    bgcolor: 'cyan',
-                    p: 3,
-                }}
-            >
-                <Typography variant='h6' color='black'>
-                    Admin Dashboard
-                </Typography>
+            <Box>
                 <Box
+                    zIndex={10}
+                    position='fixed'
                     sx={{
-                        display: { xs: 'flex', sm: 'block' },
-                        height: { md: '100vh' },
+                        width: { xs: '100%', sm: 230 },
+                        bgcolor: 'cyan',
+                        p: 3,
                     }}
-                    gap={2}
                 >
-                    <Button
-                        sx={{
-                            my: { md: 2 },
-                            // marginBottom: { sm: 0, md: 2 },
-                        }}
-                        variant='contained'
-                        size='large'
-                        color='secondary'
+                    <Typography
+                        variant='h6'
+                        color='black'
+                        display='flex'
+                        justifyContent='center'
+                        mb={2}
                     >
-                        All Blogs
-                    </Button>
-                    <Button variant='contained' size='large' color='secondary'>
-                        Add new Blog
-                    </Button>
+                        Admin Dashboard
+                    </Typography>
+                    <Box
+                        sx={{
+                            display: { xs: 'flex', sm: 'block' },
+                            height: { md: '100vh' },
+                            justifyContent: 'center',
+                        }}
+                        gap={2}
+                    >
+                        {/* <Button
+                            sx={{
+                                my: { md: 2 },
+                            }}
+                            variant='contained'
+                            size='small'
+                            color='secondary'
+                            onClick={() => setAllBlogsButton(!allBlogsButton)}
+                        >
+                            {allBlogsButton ? 'View Less' : 'View All Blogs'}
+                        </Button> */}
+                        <ShowAllBlogsButton
+                            allBlogsButton={allBlogsButton}
+                            setAllBlogsButton={setAllBlogsButton}
+                        />
+                    </Box>
                 </Box>
             </Box>
 
-            <BlogList blog={blogs} />
+            <BlogList blog={blogs} allBlogs={allBlogsButton} />
+            <AddBlog blogs={blogs} setBlogs={setBlogs} />
         </Box>
     )
 }

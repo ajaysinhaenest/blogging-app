@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
+import Notifications from './Notifications'
 import {
     Box,
     AppBar,
@@ -9,9 +9,10 @@ import {
     Button,
     MenuItem,
     Menu,
+    Badge,
 } from '@mui/material'
 
-import { Person } from '@mui/icons-material'
+import { Mail, Person } from '@mui/icons-material'
 import { inject, observer } from 'mobx-react'
 import { styled } from '@mui/material/styles'
 
@@ -22,6 +23,8 @@ const StyledToolbar = styled(Toolbar)(() => ({
 
 const StyledButton = styled(Button)(() => ({
     color: 'white',
+    gap: 30,
+    // backgroundColor: 'wh',
 }))
 
 const StyledTypography = styled(Typography)({
@@ -60,6 +63,9 @@ const Navbar = inject('loginStore')(
                             </StyledTypography>
                         </Link>
                         <StyledButton>
+                            <Badge badgeContent={4} color='success'>
+                                <Mail color='action' />
+                            </Badge>
                             {loggedIn && (
                                 <>
                                     <Person onClick={() => setOpen(true)} />
@@ -85,6 +91,7 @@ const Navbar = inject('loginStore')(
                             )}
                         </StyledButton>
                     </StyledToolbar>
+                    <Notifications />
                 </AppBar>
             </Box>
         )

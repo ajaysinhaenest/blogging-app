@@ -1,7 +1,20 @@
-import { Box, CardContent, Collapse, styled, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import {
+    Avatar,
+    Box,
+    Button,
+    CardContent,
+    InputBase,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    styled,
+    Typography,
+} from '@mui/material'
+import { FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ISingleBlog } from '../../shared/interfaces/blog.interface'
+import { IUser } from '../../shared/interfaces/user.interface'
 
 const StyledBox = styled(Box)({
     backgroundColor: 'white',
@@ -12,6 +25,23 @@ const StyledBox = styled(Box)({
     boxShadow: '1px 1px 10px gray',
 })
 
+const StyledInputBase = styled(Box)({
+    padding: '4px',
+    width: '100%',
+    borderBottom: '1px solid #1f1f1f',
+})
+
+interface IComment {
+    text: string
+    date: string
+    user: string
+}
+interface INotification {
+    text: string
+    date: string
+    user: string
+}
+
 const SingleBlog = () => {
     const [singleBlog, setSingleBlog] = useState<ISingleBlog>({
         title: '',
@@ -20,17 +50,50 @@ const SingleBlog = () => {
         imgUrl: '',
         comments: [],
     })
+    const [comment, setComment] = useState('')
     const { id } = useParams()
-    // console.log(id)
 
     useEffect(() => {
         const blogs = JSON.parse(localStorage.getItem('blogData') || 'null')
+
         console.log(blogs)
         const singleBlog = blogs?.filter((blog: ISingleBlog, i: number) => {
             return blog.title === id
         })
         setSingleBlog(singleBlog[0])
     }, [])
+
+    const handleCommentSubmit = (e: FormEvent) => {
+        e.preventDefault()
+
+        const login_user = JSON.parse(
+            localStorage.getItem('login_user') || 'null',
+        )
+
+        const allBlogs = JSON.parse(localStorage.getItem('users') || 'null')
+
+        if (comment !== '') {
+            const newComment: INotification = {
+                text: comment,
+                date: new Date().toISOString(),
+                user: login_user.name,
+                // You can add a date timestamp if needed
+            }
+
+            const updatedData = allBlogs.map((user: IUser, i: number) => {
+                if (user.admin) {
+                    return {
+                        ...user,
+                        notifications: [...user.notifications, newComment],
+                    }
+                }
+                return user
+            })
+            console.log(updatedData)
+            localStorage.setItem('users', JSON.stringify(updatedData))
+        }
+        setComment('')
+    }
 
     console.log(singleBlog)
 
@@ -97,6 +160,72 @@ const SingleBlog = () => {
                         and then serve.
                     </Typography>
                 </CardContent>
+                <Box>
+                    <Typography variant='subtitle1' fontWeight={600}>
+                        Comments:
+                    </Typography>
+                </Box>
+                <form action=''>
+                    <Box display='flex' alignItems='center'>
+                        <img
+                            height={25}
+                            src='https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png'
+                            alt=''
+                        />
+                        <StyledInputBase>
+                            <InputBase
+                                placeholder='enter your comment'
+                                sx={{ padding: '2' }}
+                                fullWidth
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+                        </StyledInputBase>
+                        <Button
+                            variant='text'
+                            type='submit'
+                            onClick={(e) => handleCommentSubmit(e)}
+                        >
+                            submit
+                        </Button>
+                    </Box>
+                </form>
+                <Box>
+                    <List
+                        sx={{
+                            width: '100%',
+                            maxWidth: 360,
+                            marginTop: 2,
+                            marginLeft: 2,
+                        }}
+                    >
+                        {singleBlog?.comments.map(
+                            (comment: IComment, i: number) => (
+                                <ListItem sx={{ padding: 0 }}>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            sx={{ height: 33, width: 33 }}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        // sx={{ display: 'flex', gap: 2 }}
+                                        primary={comment.user}
+                                        secondary={comment.text}
+                                    />
+                                    <Typography
+                                        variant='subtitle2'
+                                        color='initial'
+                                    >
+                                        {/* {comment.date} */}
+                                    </Typography>
+                                </ListItem>
+                            ),
+                        )}
+                        {/* {
+                            !Boolean(singleBlog.comments) && '' 
+                        } */}
+                    </List>
+                </Box>
             </StyledBox>
         </Box>
     )
