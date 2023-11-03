@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { Done, Close } from '@mui/icons-material'
 import { inject, observer } from 'mobx-react'
 import { IUser } from '../../interfaces/user.interface'
+import { ISingleBlog } from '../../interfaces/blog.interface'
 
 interface IComment {
     text: string
@@ -23,14 +24,25 @@ interface IComment {
     user: string
 }
 
+interface INotification {
+    text: string
+    date: string
+    user: string
+    title: string
+}
 const StyledModal = styled(Modal)({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
 })
 
+interface Props {
+    openNotification: boolean
+    setOpenNotification: React.Dispatch<React.SetStateAction<boolean>>
+}
+
 const Notifications = inject('loginStore')(
-    observer(() => {
+    observer(({ openNotification, setOpenNotification }: Props) => {
         const [admin, setAdmin] = useState<IUser>({
             admin: true,
             email: '',
@@ -38,16 +50,40 @@ const Notifications = inject('loginStore')(
             notifications: [],
             password: '',
         })
-        const [open, setOpen] = useState(false)
-
         useEffect(() => {
             const users = JSON.parse(localStorage.getItem('users') || 'null')
-            const admin = users.filter((user: IUser, i: number) => user.admin)
-            console.log(admin[0])
-            setAdmin(admin[0])
+            if (users) {
+                const admin = users?.filter(
+                    (user: IUser, i: number) => user.admin,
+                )
+                setAdmin(admin[0])
+            }
         }, [])
 
-        const handleDone = (text: string) => {
+        const handleDone = (title: string, text: string) => {
+            const users = JSON.parse(localStorage.getItem('users') || 'null')
+            const allBlogs = JSON.parse(
+                localStorage.getItem('blogData') || 'null',
+            )
+
+            const notification = admin?.notifications?.filter(
+                (comment: IComment, i) => {
+                    return comment.text === text
+                },
+            )
+
+            const updatedData = allBlogs.map((blog: ISingleBlog, i: number) => {
+                if (blog.title === title) {
+                    return {
+                        ...blog,
+                        comments: [...blog.comments, ...notification],
+                    }
+                }
+                return blog
+            })
+            console.log(updatedData)
+            localStorage.setItem('blogData', JSON.stringify(updatedData))
+
             const filteredNotifications = admin?.notifications?.filter(
                 (comment: IComment, i) => {
                     return comment.text !== text
@@ -55,8 +91,20 @@ const Notifications = inject('loginStore')(
             )
             console.log(filteredNotifications)
             setAdmin({ ...admin, notifications: filteredNotifications })
+
+            const updatedUsers = users?.map((user: IUser, i: number) => {
+                if (user.admin) {
+                    return { ...admin, notifications: filteredNotifications }
+                }
+
+                return user
+            })
+            console.log(updatedUsers)
+            localStorage.setItem('users', JSON.stringify(updatedUsers))
         }
         const handleClose = (text: string) => {
+            const users = JSON.parse(localStorage.getItem('users') || 'null')
+
             const filteredNotifications = admin?.notifications?.filter(
                 (comment: IComment, i) => {
                     return comment.text !== text
@@ -64,26 +112,24 @@ const Notifications = inject('loginStore')(
             )
             console.log(filteredNotifications)
             setAdmin({ ...admin, notifications: filteredNotifications })
+
+            const updatedUsers = users?.map((user: IUser, i: number) => {
+                if (user.admin) {
+                    return { ...admin, notifications: filteredNotifications }
+                }
+
+                return user
+            })
+            console.log(updatedUsers)
+            localStorage.setItem('users', JSON.stringify(updatedUsers))
         }
-        console.log(admin)
+
+        // console.log(admin)
         return (
             <>
-                <Tooltip
-                    onClick={() => setOpen(true)}
-                    title='Add Blog'
-                    sx={{
-                        position: 'fixed',
-                        bottom: 20,
-                        left: { xs: 'calc(50% - 25px)', md: 30 },
-                    }}
-                >
-                    <Fab color='primary' aria-label='add'>
-                        <Add />
-                    </Fab>
-                </Tooltip>
                 <StyledModal
-                    open={true}
-                    onClose={() => setOpen(false)}
+                    open={openNotification}
+                    onClose={() => setOpenNotification(false)}
                     aria-labelledby='modal-modal-title'
                     aria-describedby='modal-modal-description'
                 >
@@ -97,7 +143,7 @@ const Notifications = inject('loginStore')(
                             }}
                         >
                             {admin?.notifications?.map(
-                                (comment: IComment, i: number) => (
+                                (comment: INotification, i: number) => (
                                     <>
                                         <Box
                                             display='flex'
@@ -113,7 +159,12 @@ const Notifications = inject('loginStore')(
                                                     />
                                                 </ListItemAvatar>
                                                 <ListItemText
-                                                    primary={comment.user}
+                                                    primary={
+                                                        comment.user +
+                                                        ' commented on ' +
+                                                        comment.title +
+                                                        ' blog'
+                                                    }
                                                     secondary={comment.text}
                                                 />
                                                 <Typography
@@ -127,7 +178,10 @@ const Notifications = inject('loginStore')(
                                                 <Done
                                                     color='success'
                                                     onClick={() =>
-                                                        handleDone(comment.text)
+                                                        handleDone(
+                                                            comment.title,
+                                                            comment.text,
+                                                        )
                                                     }
                                                 />
                                                 <Close

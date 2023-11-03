@@ -10,6 +10,8 @@ const ShowAllBlogsButton = ({ allBlogsButton, setAllBlogsButton }: Props) => {
         <Button
             sx={{
                 my: { md: 2 },
+                display: 'flex',
+                justifyContent: 'center',
             }}
             variant='contained'
             size='small'

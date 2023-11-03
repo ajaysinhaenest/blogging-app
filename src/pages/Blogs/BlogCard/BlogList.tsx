@@ -23,7 +23,6 @@ const StyledBox = styled(Box)(() => ({
 
 const BlogList = ({ blog, allBlogs }: Props) => {
     const [blogCount, setBlogCount] = useState(6)
-    console.log(allBlogs)
 
     useEffect(() => {
         if (allBlogs) {

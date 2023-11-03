@@ -63,17 +63,6 @@ const Admin = ({ allBlogsButton, setAllBlogsButton }: Props) => {
                         }}
                         gap={2}
                     >
-                        {/* <Button
-                            sx={{
-                                my: { md: 2 },
-                            }}
-                            variant='contained'
-                            size='small'
-                            color='secondary'
-                            onClick={() => setAllBlogsButton(!allBlogsButton)}
-                        >
-                            {allBlogsButton ? 'View Less' : 'View All Blogs'}
-                        </Button> */}
                         <ShowAllBlogsButton
                             allBlogsButton={allBlogsButton}
                             setAllBlogsButton={setAllBlogsButton}

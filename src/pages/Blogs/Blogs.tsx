@@ -8,12 +8,11 @@ const Blogs = () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('login_user') || 'null')
-        console.log(user)
+        // console.log(user)
         if (user) {
             setIsAdmin(user.admin)
         }
     }, [])
-    console.log(isAdmin)
     return (
         <>
             {isAdmin ? (

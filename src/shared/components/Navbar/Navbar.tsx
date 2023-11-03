@@ -24,7 +24,6 @@ const StyledToolbar = styled(Toolbar)(() => ({
 const StyledButton = styled(Button)(() => ({
     color: 'white',
     gap: 30,
-    // backgroundColor: 'wh',
 }))
 
 const StyledTypography = styled(Typography)({
@@ -36,15 +35,14 @@ const Navbar = inject('loginStore')(
     observer(({ loginStore }: any) => {
         const [loggedIn, setLoggedIn] = useState<boolean>(false)
         const [open, setOpen] = useState(false)
+        const [openNotification, setOpenNotification] = useState(false)
         const navigate = useNavigate()
 
         useEffect(() => {
             const loginUser = JSON.parse(
                 localStorage.getItem('login_user') || 'null',
             )
-            console.log(loginUser)
             setLoggedIn(!!loginUser)
-            console.log(!!loginUser)
         }, [loggedIn])
 
         const handleLogout = () => {
@@ -63,7 +61,13 @@ const Navbar = inject('loginStore')(
                             </StyledTypography>
                         </Link>
                         <StyledButton>
-                            <Badge badgeContent={4} color='success'>
+                            <Badge
+                                badgeContent={4}
+                                color='success'
+                                onClick={() =>
+                                    setOpenNotification(!openNotification)
+                                }
+                            >
                                 <Mail color='action' />
                             </Badge>
                             {loggedIn && (
@@ -91,7 +95,10 @@ const Navbar = inject('loginStore')(
                             )}
                         </StyledButton>
                     </StyledToolbar>
-                    <Notifications />
+                    <Notifications
+                        openNotification={openNotification}
+                        setOpenNotification={setOpenNotification}
+                    />
                 </AppBar>
             </Box>
         )

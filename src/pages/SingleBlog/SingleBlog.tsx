@@ -40,6 +40,7 @@ interface INotification {
     text: string
     date: string
     user: string
+    title: string
 }
 
 const SingleBlog = () => {
@@ -77,6 +78,7 @@ const SingleBlog = () => {
                 text: comment,
                 date: new Date().toISOString(),
                 user: login_user.name,
+                title: singleBlog.title,
                 // You can add a date timestamp if needed
             }
 

@@ -34,7 +34,6 @@ const BlogCard = ({ title, imgUrl, description, date }: Props) => {
     )
 
     const realTime = dateObject.calendar()
-    console.log(realTime)
 
     return (
         <Card sx={{ maxWidth: 320, margin: 2 }}>
